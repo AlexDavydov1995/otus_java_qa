@@ -18,12 +18,12 @@ repositories {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:${project.property("junitVersion")}"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    testImplementation("org.seleniumhq.selenium:selenium-java:${project.property("seleniumJavaVersion")}")
-    testImplementation("io.github.bonigarcia:webdrivermanager:${project.property("webDriverManagerVersion")}")
+    implementation(platform("org.junit:junit-bom:${project.property("junitVersion")}"))
+    implementation("org.junit.jupiter:junit-jupiter")
+    implementation("org.seleniumhq.selenium:selenium-java:${project.property("seleniumJavaVersion")}")
+    implementation("io.github.bonigarcia:webdrivermanager:${project.property("webDriverManagerVersion")}")
     implementation("com.google.inject:guice:${project.property("guiceVersion")}")
-    testImplementation("org.assertj:assertj-core:${project.property("assertjVersion")}")}
+    implementation("org.assertj:assertj-core:${project.property("assertjVersion")}")}
 
 tasks.test {
     useJUnitPlatform()
