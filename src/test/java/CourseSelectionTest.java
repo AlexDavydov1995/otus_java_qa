@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 @ExtendWith(UIExtension.class)
-public class CourseDatesSelectionTest {
+public class CourseSelectionTest {
 
   @Inject
   CoursesPage coursesPage;
