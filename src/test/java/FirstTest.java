@@ -15,7 +15,7 @@ public class FirstTest {
   MainPageBreadcrumbsComponent mainPageBreadcrumbsComponent;
 
   @Test
-  public void firstTest() throws InterruptedException {
+  public void test() throws InterruptedException {
     mainPage.open()
         .checkBreadcrumbsVisibility();
 

@@ -1,10 +1,12 @@
 package org.example.driver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.example.exceptions.BrowserNotSupported;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.events.EventFiringDecorator;
+import java.time.Duration;
 import java.util.Locale;
 
 public class WebDriverFactory {
@@ -27,17 +29,17 @@ public class WebDriverFactory {
       throw new BrowserNotSupported(browserName);
     WebDriver driver;
     switch (Browser.valueOf(browserName.toUpperCase(Locale.ROOT))) {
-      case CHROME:
+      case CHROME -> {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
-        break;
-      case FIREFOX:
+      }
+      case FIREFOX -> {
         WebDriverManager.firefoxdriver().setup();
         driver = new FirefoxDriver();
-        break;
-      default:
-        throw new BrowserNotSupported(browserName);
+      }
+      default -> throw new BrowserNotSupported(browserName);
     }
+    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10L));
     return new EventFiringDecorator<>(new ElementHighlightListener()).decorate(driver);
   }
 }

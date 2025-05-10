@@ -1,4 +1,4 @@
-package org.example.driver;
+package org.example.exceptions;
 
 public class BrowserNotSupported extends RuntimeException {
   public BrowserNotSupported(String message) {

@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 public class UIExtension implements BeforeEachCallback, AfterEachCallback {
 
   private Injector injector = null;
+
   @Override
   public void afterEach(ExtensionContext extensionContext) throws Exception {
     extensionContext.getTestInstance()
@@ -30,4 +31,5 @@ public class UIExtension implements BeforeEachCallback, AfterEachCallback {
     injector = Guice.createInjector(new GuicePagesModule(driver), new GuiceComponentsModule(driver));
     injector.injectMembers(extensionContext.getTestInstance().get());
   }
+
 }
