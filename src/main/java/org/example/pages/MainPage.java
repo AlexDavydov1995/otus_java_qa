@@ -3,6 +3,7 @@ package org.example.pages;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.inject.Inject;
+import org.example.GuiceScoped;
 import org.example.annotations.Path;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,8 +17,8 @@ public class MainPage extends AbsBasePage<MainPage> {
   private WebElement breadcrumbs;
 
   @Inject
-  public MainPage(WebDriver driver) {
-    super(driver);
+  public MainPage(GuiceScoped guiceScoped) {
+    super(guiceScoped);
   }
 
   public MainPage checkBreadcrumbsVisibility() {

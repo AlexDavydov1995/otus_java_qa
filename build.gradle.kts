@@ -5,6 +5,9 @@ plugins {
     checkstyle
 }
 
+spotbugs {
+    excludeFilter = file("$projectDir/config/spotbugs/findbugs-exclude.xml")
+}
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
@@ -31,8 +34,23 @@ dependencies {
     implementation("com.google.inject:guice:${project.property("guiceVersion")}")
     implementation("org.assertj:assertj-core:${project.property("assertjVersion")}")
     implementation("org.jsoup:jsoup:${project.property("jsoupVersion")}")
-    implementation("org.apache.logging.log4j:log4j-core:2.23.1")
-    implementation("org.apache.logging.log4j:log4j-api:2.23.1")
+
+    implementation("org.slf4j:slf4j-api:2.0.12")
+    implementation("ch.qos.logback:logback-classic:1.4.14")
+
+    implementation("io.cucumber:cucumber-junit-platform-engine:7.17.0")
+    implementation("io.cucumber:cucumber-java:7.17.0")
+    implementation("io.cucumber:cucumber-guice:7.17.0")
+
+    testImplementation("org.seleniumhq.selenium:selenium-chrome-driver:${project.property("seleniumJavaVersion")}")
+    testImplementation("org.seleniumhq.selenium:selenium-edge-driver:${project.property("seleniumJavaVersion")}")
+    testImplementation("org.seleniumhq.selenium:selenium-firefox-driver:${project.property("seleniumJavaVersion")}")
+
+    testImplementation("ch.qos.logback:logback-classic:1.4.14")
+
+    implementation("javax.annotation:javax.annotation-api:1.3.2")
+    implementation("com.google.code.findbugs:jsr305:3.0.2")
+    implementation("net.jcip:jcip-annotations:1.0")
 }
 
 sourceSets {

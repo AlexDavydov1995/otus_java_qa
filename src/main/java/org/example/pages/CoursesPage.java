@@ -4,23 +4,23 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.inject.Inject;
+import org.example.GuiceScoped;
 import org.example.annotations.Path;
 import org.example.exceptions.DelayException;
 import org.example.utils.CourseDates;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 
 @Path("/catalog/courses")
 public class CoursesPage extends AbsBasePage<CoursesPage> {
-  private static final Pattern DATE_PATTERN = Pattern.compile("^0?\\d{1,2}\\s+(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря),\\s*\\d{4}$");
+  private static final Logger LOG = LoggerFactory.getLogger(CoursesPage.class);
 
   @FindBy(xpath = "//a[contains(@href, '/lessons/')]")
   private WebElement courses;
@@ -28,7 +28,7 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
   @FindBy(xpath = "//div[text()='Каталог']")
   private WebElement header;
 
-  @FindBy(xpath = "//button[text()='Показать еще 20']")
+  @FindBy(xpath = "//button[contains(text(), 'Показать еще ')]")
   private WebElement expandButton;
 
   @FindBy(xpath = "//*[text()='Направление']/../following-sibling::div//div[contains(@class, 'sc-1fry39v-0')]")
@@ -37,8 +37,8 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
 
 
   @Inject
-  public CoursesPage(WebDriver driver) {
-    super(driver);
+  public CoursesPage(GuiceScoped guiceScoped) {
+    super(guiceScoped);
   }
 
 
@@ -78,7 +78,7 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
     waiter.waitForCondition(ExpectedConditions.elementToBeClickable(courseElement));
     actions.moveToElement(courseElement).build().perform();
     courseElement.click();
-    return new CoursePage(driver);
+    return new CoursePage(guiceScoped);
   }
 
   public CoursesPage checkCoursesPageVisibility() {
@@ -88,7 +88,7 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
 
   public CoursesPage checkCheckBoxInput(String selectedCategory) {
     Consumer<WebElement> consumer = element -> {
-      log.debug(element.getText() + " - " + element.getDomAttribute("value"));
+      LOG.debug(element.getText() + " - " + element.getDomAttribute("value"));
       assertThat(Boolean.valueOf(
           element.getDomAttribute("value"))
       )
@@ -102,8 +102,8 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
 
   public String findAndClickEarliest() {
     String earliestDate = findCourseDates().get(0).toString();
-    log.info(earliestDate);
-    WebElement earliestCourse = courses.findElements(By.xpath("//div[contains(text(), '"+earliestDate+"')]")).get(0);
+    LOG.info(earliestDate);
+    WebElement earliestCourse = courses.findElements(By.xpath("//div[contains(text(), '" + earliestDate + "')]")).get(0);
     centerElement(earliestCourse);
     waiter.waitForCondition(ExpectedConditions.elementToBeClickable(earliestCourse));
     actions.moveToElement(earliestCourse).build().perform();
@@ -113,9 +113,9 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
 
   public String findAndClickLatest() {
     List<CourseDates> courseDates = findCourseDates();
-    String latestDate = courseDates.get(courseDates.size()-1).toString();
-    log.info(latestDate);
-    WebElement latestCourse = courses.findElements(By.xpath("//div[contains(text(), '"+latestDate+"')]")).get(0);
+    String latestDate = courseDates.get(courseDates.size() - 1).toString();
+    LOG.info(latestDate);
+    WebElement latestCourse = courses.findElements(By.xpath("//div[contains(text(), '" + latestDate + "')]")).get(0);
     centerElement(latestCourse);
     waiter.waitForCondition(ExpectedConditions.elementToBeClickable(latestCourse));
     actions.moveToElement(latestCourse).build().perform();

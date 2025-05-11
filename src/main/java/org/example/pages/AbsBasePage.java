@@ -1,12 +1,12 @@
 package org.example.pages;
 
 import com.google.inject.Inject;
+import org.example.GuiceScoped;
 import org.example.annotations.Path;
 import org.example.common.AbsCommon;
 import org.example.exceptions.DelayException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -14,8 +14,8 @@ abstract public class AbsBasePage<T> extends AbsCommon<T> {
   private static final String BASE_URL = "https://otus.ru";
 
   @Inject
-  public AbsBasePage(WebDriver driver) {
-    super(driver);
+  public AbsBasePage(GuiceScoped guiceScoped) {
+    super(guiceScoped);
   }
 
   public T open() {

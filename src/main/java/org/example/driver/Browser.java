@@ -2,7 +2,8 @@ package org.example.driver;
 
 public enum Browser {
   CHROME("chrome"),
-  FIREFOX("firefox");
+  FIREFOX("firefox"),
+  EDGE("edge");
 
   private final String name;
 

@@ -3,6 +3,7 @@ package org.example.guice;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import org.example.GuiceScoped;
 import org.example.components.CourseComponent;
 import org.example.components.EducationMenuComponent;
 import org.example.components.MainPageBreadcrumbsComponent;
@@ -10,27 +11,27 @@ import org.openqa.selenium.WebDriver;
 
 public class GuiceComponentsModule extends AbstractModule {
 
-  private final WebDriver driver;
+  private final GuiceScoped guiceScoped;
 
-  public GuiceComponentsModule(WebDriver driver) {
-    this.driver = driver;
+  public GuiceComponentsModule(GuiceScoped guiceScoped) {
+    this.guiceScoped = guiceScoped;
   }
 
   @Provides
   @Singleton
   public MainPageBreadcrumbsComponent getMainPageBreadcrumbsComponent() {
-    return new MainPageBreadcrumbsComponent(driver);
+    return new MainPageBreadcrumbsComponent(guiceScoped);
   }
 
   @Provides
   @Singleton
   public CourseComponent getCourseComponent() {
-    return new CourseComponent(driver);
+    return new CourseComponent(guiceScoped);
   }
 
   @Provides
   @Singleton
   public EducationMenuComponent getEducationMenuComponent() {
-    return new EducationMenuComponent(driver);
+    return new EducationMenuComponent(guiceScoped);
   }
 }
