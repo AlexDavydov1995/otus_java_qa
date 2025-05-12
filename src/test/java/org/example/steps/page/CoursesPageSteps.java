@@ -3,6 +3,8 @@ package org.example.steps.page;
 import com.google.inject.Inject;
 import io.cucumber.java.ru.Пусть;
 import org.example.pages.CoursesPage;
+import java.util.Comparator;
+import java.util.Objects;
 
 public class CoursesPageSteps {
   @Inject
@@ -12,6 +14,7 @@ public class CoursesPageSteps {
   public void openCoursePage() {
     coursesPage.open();
   }
+
   @Пусть("курсы развернуты (\\d{1,3}) раз(?:а?)$")
   public void expandCoursesNTimes(int n) {
     coursesPage.expandNTimes(n);
@@ -21,4 +24,30 @@ public class CoursesPageSteps {
   public void findCourseByName(String course) {
     coursesPage.findAndClickCourseByName(course);
   }
+
+  @Пусть("Найдены курсы стартующие в дату (.*)$")
+  public void findCoursesStartingOnDate(String date) {
+    System.out.println(date);
+  }
+
+  @Пусть("Найдены курсы стартующие позже даты (.*)$")
+  public void findCoursesStartingAfterDate(String date) {
+    System.out.println(date);
+  }
+
+  @Пусть("Выбрана категория (.*)$")
+  public void chooseCategory(String category) {
+    System.out.println(category);
+  }
+
+  @Пусть("Найден самый (дорогой|дешевый) курс$")
+  public void findMostExpensiveOrCheapest(String sort) {
+    Comparator<Double> comparator;
+    if (Objects.equals(sort, "дорогой"))
+      comparator = Comparator.naturalOrder();
+    else
+      comparator = Comparator.reverseOrder();
+    System.out.println(comparator);
+  }
+
 }

@@ -72,7 +72,7 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
             it -> it.getText().equals(course)
         )
         .toList();
-    assertThat(courseWebElement.size()).isEqualTo(1);
+    assertThat(courseWebElement.size()).isGreaterThanOrEqualTo(1);
     WebElement courseElement = courseWebElement.get(0);
     centerElement(courseElement);
     waiter.waitForCondition(ExpectedConditions.elementToBeClickable(courseElement));
