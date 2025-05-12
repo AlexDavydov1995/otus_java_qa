@@ -6,7 +6,8 @@ import org.example.pages.CoursesPage;
 import java.util.Comparator;
 import java.util.Objects;
 
-public class CoursesPageSteps {
+public class CoursesPageSteps extends LoggedSteps{
+
   @Inject
   private CoursesPage coursesPage;
 
@@ -27,17 +28,17 @@ public class CoursesPageSteps {
 
   @Пусть("Найдены курсы стартующие в дату (.*)$")
   public void findCoursesStartingOnDate(String date) {
-    System.out.println(date);
+    LOG.info(date);
   }
 
   @Пусть("Найдены курсы стартующие позже даты (.*)$")
   public void findCoursesStartingAfterDate(String date) {
-    System.out.println(date);
+    LOG.info(date);
   }
 
   @Пусть("Выбрана категория (.*)$")
   public void chooseCategory(String category) {
-    System.out.println(category);
+    LOG.info(category);
   }
 
   @Пусть("Найден самый (дорогой|дешевый) курс$")
@@ -47,7 +48,7 @@ public class CoursesPageSteps {
       comparator = Comparator.naturalOrder();
     else
       comparator = Comparator.reverseOrder();
-    System.out.println(comparator);
+    LOG.info(comparator.toString());
   }
 
 }

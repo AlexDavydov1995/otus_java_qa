@@ -12,7 +12,7 @@
     <!-- Наш логгер -->
     <logger name="org.example.driver.WebDriverFactory" level="info"/>
     <logger name="org.example.steps.browser.BrowserSteps" level="info"/>
-
+    <logger name="org.example.steps.page.LoggedSteps" level="info"/>
     <root level="INFO">
         <appender-ref ref="STDOUT" />
     </root>
