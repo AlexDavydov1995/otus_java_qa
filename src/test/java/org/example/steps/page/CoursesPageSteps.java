@@ -3,7 +3,9 @@ package org.example.steps.page;
 import com.google.inject.Inject;
 import io.cucumber.java.ru.Пусть;
 import org.example.pages.CoursesPage;
+import org.openqa.selenium.WebElement;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 public class CoursesPageSteps extends LoggedSteps{
@@ -29,6 +31,7 @@ public class CoursesPageSteps extends LoggedSteps{
   @Пусть("Найдены курсы стартующие в дату (.*)$")
   public void findCoursesStartingOnDate(String date) {
     LOG.info(date);
+    coursesPage.findAndPrintCourseByExactDate(date);
   }
 
   @Пусть("Найдены курсы стартующие позже даты (.*)$")

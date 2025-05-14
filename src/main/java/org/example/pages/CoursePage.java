@@ -19,6 +19,9 @@ public class CoursePage extends AbsBasePage<CoursePage> {
   WebElement displayTitleElement;
 
   @Inject
+  CoursesPage coursesPage;
+
+  @Inject
   public CoursePage(GuiceScoped guiceScoped) {
     super(guiceScoped);
   }
@@ -43,5 +46,10 @@ public class CoursePage extends AbsBasePage<CoursePage> {
     }
     LOG.info("Найдена дата курса: " + dateElements.first().text());
     return this;
+  }
+
+  public CoursesPage getBackToCourses() {
+    driver.navigate().back();
+    return coursesPage;
   }
 }

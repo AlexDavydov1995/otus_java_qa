@@ -41,6 +41,9 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
     super(guiceScoped);
   }
 
+  @Inject
+  public CoursePage coursePage;
+
 
   public CoursesPage waitCoursesVisible() {
     waiter.waitForCondition(ExpectedConditions.visibilityOf(courses));
@@ -78,7 +81,21 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
     waiter.waitForCondition(ExpectedConditions.elementToBeClickable(courseElement));
     actions.moveToElement(courseElement).build().perform();
     courseElement.click();
-    return new CoursePage(guiceScoped);
+    return coursePage;
+  }
+
+  public void findAndPrintCourseByExactDate(String date) {
+    List<WebElement> coursesWithDate = courses.findElements(By.xpath("//div[contains(text(), '" + date + "')]"));
+    for(WebElement courseWithDate : coursesWithDate) {
+      try {
+        centerElement(courseWithDate);
+        String courseName = courseWithDate.findElement(By.xpath("../../../h6")).getAccessibleName();
+        LOG.info("Курс {} стартует в дату {}", courseName, date);
+        Thread.sleep(3000);
+      } catch (InterruptedException e) {
+        throw new DelayException();
+      }
+    }
   }
 
   public CoursesPage checkCoursesPageVisibility() {
