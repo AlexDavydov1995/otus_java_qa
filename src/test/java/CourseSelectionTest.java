@@ -15,9 +15,10 @@ public class CourseSelectionTest {
 
   static Stream<Arguments> courseDataProvider() {
     return Stream.of(
-        Arguments.of("Kotlin QA Engineer", "Курс Kotlin QA Engineer. Разработка тестов для всех платформ где используется Kotlin"),
-        Arguments.of("Administrator Linux. Basic", "Курс Администратор Linux, базовый уровень"),
-        Arguments.of("BI-аналитика", "Курс по BI-аналитике. Best Practice по созданию кастомных дашбордов и работе с Power BI, Tableau, Apache Superset")
+        Arguments.of("Базы данных",
+            "Полный курс по работе с реляционными и нереляционными Nosql базами данных для профессионалов. Все основные и популярные БД: Postgresql, Mysql, mongodb, cassandra, redis"),
+        Arguments.of("Системный аналитик", "Специализация системный аналитик. Освойте востребованную профессию системного аналитика с нуля"),
+        Arguments.of("Бизнес-аналитик 1С", "Курс бизнес-аналитик 1С")
     );
   }
 

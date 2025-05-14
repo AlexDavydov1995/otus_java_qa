@@ -15,6 +15,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
@@ -35,6 +36,7 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
   //xpath = "//*[text()='Направление']/../following-sibling::div//input
   private List<WebElement> checkBoxInputs;
 
+  private static Random RANDOM = new Random();
 
   @Inject
   public CoursesPage(WebDriver driver) {
@@ -73,7 +75,7 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
         )
         .toList();
     assertThat(courseWebElement.size()).isGreaterThanOrEqualTo(1);
-    WebElement courseElement = courseWebElement.get(0);
+    WebElement courseElement = courseWebElement.get(RANDOM.nextInt(courseWebElement.size()));
     centerElement(courseElement);
     waiter.waitForCondition(ExpectedConditions.elementToBeClickable(courseElement));
     actions.moveToElement(courseElement).build().perform();
