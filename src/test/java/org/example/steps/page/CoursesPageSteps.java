@@ -3,12 +3,11 @@ package org.example.steps.page;
 import com.google.inject.Inject;
 import io.cucumber.java.ru.Пусть;
 import org.example.pages.CoursesPage;
-import org.openqa.selenium.WebElement;
+import org.example.steps.LoggedSteps;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
 
-public class CoursesPageSteps extends LoggedSteps{
+public class CoursesPageSteps extends LoggedSteps {
 
   @Inject
   private CoursesPage coursesPage;
