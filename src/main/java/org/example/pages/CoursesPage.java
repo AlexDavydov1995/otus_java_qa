@@ -149,8 +149,8 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
         .sorted();
   }
 
-  public Map<String, String> getPreCoursesPrices() {
-    Map<String, String> result = Maps.newHashMap();
+  public Map<String, Integer> getPreCoursesPrices() {
+    Map<String, Integer> result = Maps.newHashMap();
     String originalWindow = driver.getWindowHandle();
     for (WebElement preCourseTile : preCoursesTiles) {
       centerElement(preCourseTile);
@@ -163,8 +163,8 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
         if (!window.equals(originalWindow)) {
           driver.switchTo().window(window);
           Map.Entry<String, String> entry = coursePage.getPrice();
-          LOG.info("Цена курса - {}", entry);
-          result.put(entry.getKey(), entry.getValue());
+          LOG.debug("Цена курса - {}", entry);
+          result.put(entry.getKey(), Integer.valueOf(entry.getValue().split(" ")[0]));
           driver.close();
           driver.switchTo().window(originalWindow);
           break;

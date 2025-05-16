@@ -4,7 +4,8 @@ import com.google.inject.Inject;
 import io.cucumber.java.ru.Пусть;
 import org.example.pages.CoursesPage;
 import org.example.steps.LoggedSteps;
-import java.util.Comparator;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
 
 public class CoursesPageSteps extends LoggedSteps {
@@ -41,13 +42,20 @@ public class CoursesPageSteps extends LoggedSteps {
 
   @Пусть("Найден самый (дорогой|дешевый) курс$")
   public void findMostExpensiveOrCheapest(String sort) {
-    Comparator<Double> comparator;
+    Integer limitPrice;
+    Map<String, Integer> coursesAndPrices = coursesPage.getPreCoursesPrices();
     if (Objects.equals(sort, "дорогой"))
-      comparator = Comparator.naturalOrder();
+      limitPrice = Collections.max(coursesAndPrices.values());
     else
-      comparator = Comparator.reverseOrder();
-    LOG.info(comparator.toString());
-    coursesPage.getPreCoursesPrices();
+      limitPrice = Collections.min(coursesAndPrices.values());
+    LOG.info("Ищем по цене {} ₽", limitPrice);
+    coursesAndPrices.entrySet().stream()
+        .filter(
+            entry ->
+                Objects.equals(entry.getValue(), limitPrice)
+        ).forEach(
+            entry ->
+                LOG.info("Курс \"{}\" с ценой {} ₽", entry.getKey(), entry.getValue())
+    );
   }
-
 }
