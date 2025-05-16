@@ -12,7 +12,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class CoursePage extends AbsBasePage<CoursePage> {
 
-  @FindBy(xpath = "/html/body/div[1]/div[2]/main/div/section/div[2]/div[2]/h1")
+  @FindBy(xpath = "//main//div[contains(@class, 'sc-s2pydo-6')]//h1[contains(@class, 'sc-1x9oq14-0')]")
   WebElement displayTitleElement;
 
   @Inject

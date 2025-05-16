@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 @Path("/")
 public class MainPage extends AbsBasePage<MainPage> {
 
-  @FindBy(xpath = "/html/body/div[1]/div[2]/main/div[1]/div[3]/div/div[3]")
+  @FindBy(xpath = "//main//div[contains(@class, sc-x072mc-0)]//div[contains(@class, sc-1sgv0wl-8)]")
   private WebElement breadcrumbs;
 
   @Inject

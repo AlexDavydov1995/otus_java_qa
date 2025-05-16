@@ -8,7 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 
-public class AbsCommon<T> {
+public abstract class AbsCommon<T> {
 
   protected Logger log = LogManager.getLogger(AbsCommon.class);
 

@@ -60,6 +60,20 @@ public final class CourseDates implements Comparable<CourseDates> {
         && Objects.equals(year, other.year);
   }
 
+  public static CourseDates max(CourseDates a, CourseDates b) {
+    if(a.compareTo(b) >= 0)
+      return a;
+    else
+      return b;
+  }
+
+  public static CourseDates min(CourseDates a, CourseDates b) {
+    if(a.compareTo(b) >= 0)
+      return b;
+    else
+      return a;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(day, month, year);

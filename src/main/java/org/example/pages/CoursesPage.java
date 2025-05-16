@@ -18,11 +18,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 @Path("/catalog/courses")
 public class CoursesPage extends AbsBasePage<CoursesPage> {
-  private static final Pattern DATE_PATTERN = Pattern.compile("^0?\\d{1,2}\\s+(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря),\\s*\\d{4}$");
-
   @FindBy(xpath = "//a[contains(@href, '/lessons/')]")
   private WebElement courses;
 
@@ -103,8 +102,8 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
   }
 
   public String findAndClickEarliest() {
-    String earliestDate = findCourseDates().get(0).toString();
-    log.info(earliestDate);
+    String earliestDate = findCourseDates().reduce(CourseDates::min).orElseThrow().toString();
+    log.info("Наиболее ранняя дата из найденных {}", earliestDate);
     WebElement earliestCourse = courses.findElements(By.xpath("//div[contains(text(), '"+earliestDate+"')]")).get(0);
     centerElement(earliestCourse);
     waiter.waitForCondition(ExpectedConditions.elementToBeClickable(earliestCourse));
@@ -114,9 +113,8 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
   }
 
   public String findAndClickLatest() {
-    List<CourseDates> courseDates = findCourseDates();
-    String latestDate = courseDates.get(courseDates.size()-1).toString();
-    log.info(latestDate);
+    String latestDate = findCourseDates().reduce(CourseDates::max).orElseThrow().toString();
+    log.info("Наиболее поздняя дата из найденных {}",latestDate);
     WebElement latestCourse = courses.findElements(By.xpath("//div[contains(text(), '"+latestDate+"')]")).get(0);
     centerElement(latestCourse);
     waiter.waitForCondition(ExpectedConditions.elementToBeClickable(latestCourse));
@@ -125,14 +123,13 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
     return latestDate;
   }
 
-  private List<CourseDates> findCourseDates() {
+  private Stream<CourseDates> findCourseDates() {
     return courses.findElements(By.xpath("//div[contains(@class, 'sc-157icee-1')]/div")).stream()
         .map(WebElement::getText)
         .filter(it -> !it.isEmpty() && !it.equals("О дате старта будет объявлено позже"))
         .map(it -> it.split("·")[0].trim())
         .map(CourseDates::new)
         .distinct()
-        .sorted()
-        .toList();
+        .sorted();
   }
 }

@@ -5,7 +5,7 @@
  - java17
 
 ### Запуск
-```gradle clean build```
+```gradle clean build -PbaseUrl=https://otus.ru```
 
 ### Кейсы:
  - Сценарий 1 - CourseSelectionTest

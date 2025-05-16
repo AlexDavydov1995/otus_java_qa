@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class MainPageBreadcrumbsComponent extends AbsComponent<MainPageBreadcrumbsComponent> {
 
-  @FindBy(xpath = "/html/body/div[1]/div[2]/main/div[1]/div[3]/div/div[3]/div/a[1]")
+  @FindBy(xpath = "//main//div[contains(@class, sc-x072mc-0)]//a[text()='Программирование']")
   private WebElement programmingBreadcrumb;
 
   @Inject
