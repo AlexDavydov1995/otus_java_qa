@@ -3,51 +3,48 @@ package org.example.pages;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import org.example.GuiceScoped;
 import org.example.annotations.Path;
 import org.example.exceptions.DelayException;
-import org.example.utils.CourseDates;
+import org.example.utils.CourseDate;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 @Path("/catalog/courses")
 public class CoursesPage extends AbsBasePage<CoursesPage> {
+
   private static final Logger LOG = LoggerFactory.getLogger(CoursesPage.class);
-
-  @FindBy(xpath = "//a[contains(@href, '/lessons/')]")
-  private WebElement courses;
-
-  @FindBy(xpath = "//div[text()='Каталог']")
-  private WebElement header;
-
-  @FindBy(xpath = "//button[contains(text(), 'Показать еще ')]")
-  private WebElement expandButton;
-
-  @FindBy(xpath = "//*[text()='Направление']/../following-sibling::div//div[contains(@class, 'sc-1fry39v-0')]")
-  //xpath = "//*[text()='Направление']/../following-sibling::div//input
-  private List<WebElement> checkBoxInputs;
-
-
-  @Inject
-  public CoursesPage(GuiceScoped guiceScoped) {
-    super(guiceScoped);
-  }
 
   @Inject
   public CoursePage coursePage;
 
+  @FindBy(xpath = "//a[contains(@href, '/lessons/')]")
+  private WebElement coursesTiles;
+  @FindBy(xpath = "//div[text()='Каталог']")
+  private WebElement header;
+  @FindBy(xpath = "//button[contains(text(), 'Показать еще ')]")
+  private WebElement expandButton;
+  @FindBy(xpath = "//*[text()='Направление']/../following-sibling::div//div[contains(@class, 'sc-1fry39v-0')]")
+  private List<WebElement> checkBoxInputs;
+  @FindBy(xpath = "//main//div[contains(@class, sc-18q05a6-1)]//a[contains(@href, 'online/')]")
+  private List<WebElement> preCoursesTiles;
 
-  public CoursesPage waitCoursesVisible() {
-    waiter.waitForCondition(ExpectedConditions.visibilityOf(courses));
-    return this;
+  @Inject
+  public CoursesPage(GuiceScoped guiceScoped) {
+    super(guiceScoped);
   }
 
   public CoursesPage expandNTimes(int n) {
@@ -70,7 +67,7 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
   }
 
   public CoursePage findAndClickCourseByName(String course) {
-    List<WebElement> courseWebElement = courses.findElements(By.xpath("//h6[1]/div")).stream()
+    List<WebElement> courseWebElement = coursesTiles.findElements(By.xpath("//h6[1]/div")).stream()
         .filter(
             it -> it.getText().equals(course)
         )
@@ -85,16 +82,19 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
   }
 
   public void findAndPrintCourseByExactDate(String date) {
-    List<WebElement> coursesWithDate = courses.findElements(By.xpath("//div[contains(text(), '" + date + "')]"));
-    for(WebElement courseWithDate : coursesWithDate) {
-      try {
-        centerElement(courseWithDate);
-        String courseName = courseWithDate.findElement(By.xpath("../../../h6")).getAccessibleName();
-        LOG.info("Курс {} стартует в дату {}", courseName, date);
-        Thread.sleep(3000);
-      } catch (InterruptedException e) {
-        throw new DelayException();
-      }
+    List<WebElement> coursesWithDate = coursesTiles.findElements(By.xpath("//div[contains(text(), '" + date + "')]"));
+    for (WebElement courseWithDate : coursesWithDate) {
+      String courseName = courseWithDate.findElement(By.xpath("../../../h6")).getAccessibleName();
+      LOG.info("Курс {} стартует в дату {}", courseName, date);
+    }
+  }
+
+  public void findAndPrintCourseAfterDate(String date) {
+    CourseDate courseDate = new CourseDate(date);
+    List<CourseDate> courseDates = findCourseDates().filter(it -> courseDate.compareTo(it) < 0).toList();
+    for (CourseDate cd : courseDates) {
+      LOG.info("Дата: {}", cd);
+      findAndPrintCourseByExactDate(cd.toString());
     }
   }
 
@@ -118,9 +118,9 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
   }
 
   public String findAndClickEarliest() {
-    String earliestDate = findCourseDates().get(0).toString();
-    LOG.info(earliestDate);
-    WebElement earliestCourse = courses.findElements(By.xpath("//div[contains(text(), '" + earliestDate + "')]")).get(0);
+    String earliestDate = findCourseDates().reduce(CourseDate::min).orElseThrow().toString();
+    LOG.info("Наиболее ранняя дата из найденных {}", earliestDate);
+    WebElement earliestCourse = coursesTiles.findElements(By.xpath("//div[contains(text(), '" + earliestDate + "')]")).get(0);
     centerElement(earliestCourse);
     waiter.waitForCondition(ExpectedConditions.elementToBeClickable(earliestCourse));
     actions.moveToElement(earliestCourse).build().perform();
@@ -129,10 +129,9 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
   }
 
   public String findAndClickLatest() {
-    List<CourseDates> courseDates = findCourseDates();
-    String latestDate = courseDates.get(courseDates.size() - 1).toString();
-    LOG.info(latestDate);
-    WebElement latestCourse = courses.findElements(By.xpath("//div[contains(text(), '" + latestDate + "')]")).get(0);
+    String latestDate = findCourseDates().reduce(CourseDate::max).orElseThrow().toString();
+    LOG.info("Наиболее поздняя дата из найденных {}", latestDate);
+    WebElement latestCourse = coursesTiles.findElements(By.xpath("//div[contains(text(), '" + latestDate + "')]")).get(0);
     centerElement(latestCourse);
     waiter.waitForCondition(ExpectedConditions.elementToBeClickable(latestCourse));
     actions.moveToElement(latestCourse).build().perform();
@@ -140,14 +139,38 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
     return latestDate;
   }
 
-  private List<CourseDates> findCourseDates() {
-    return courses.findElements(By.xpath("//div[contains(@class, 'sc-157icee-1')]/div")).stream()
+  private Stream<CourseDate> findCourseDates() {
+    return coursesTiles.findElements(By.xpath("//div[contains(@class, 'sc-157icee-1')]/div")).stream()
         .map(WebElement::getText)
         .filter(it -> !it.isEmpty() && !it.equals("О дате старта будет объявлено позже"))
         .map(it -> it.split("·")[0].trim())
-        .map(CourseDates::new)
+        .map(CourseDate::new)
         .distinct()
-        .sorted()
-        .toList();
+        .sorted();
+  }
+
+  public Map<String, String> getPreCoursesPrices() {
+    Map<String, String> result = Maps.newHashMap();
+    String originalWindow = driver.getWindowHandle();
+    for (WebElement preCourseTile : preCoursesTiles) {
+      centerElement(preCourseTile);
+      waiter.waitForCondition(ExpectedConditions.elementToBeClickable(preCourseTile));
+      actions.moveToElement(preCourseTile).build().perform();
+      preCourseTile.sendKeys(Keys.chord(Keys.CONTROL, Keys.RETURN));
+      waiter.waitForCondition(ExpectedConditions.numberOfWindowsToBe(2));
+      Set<String> allWindows = driver.getWindowHandles();
+      for (String window : allWindows) {
+        if (!window.equals(originalWindow)) {
+          driver.switchTo().window(window);
+          Map.Entry<String, String> entry = coursePage.getPrice();
+          LOG.info("Цена курса - {}", entry);
+          result.put(entry.getKey(), entry.getValue());
+          driver.close();
+          driver.switchTo().window(originalWindow);
+          break;
+        }
+      }
+    }
+    return result;
   }
 }

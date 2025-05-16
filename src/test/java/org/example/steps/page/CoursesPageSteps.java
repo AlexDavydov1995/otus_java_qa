@@ -14,7 +14,7 @@ public class CoursesPageSteps extends LoggedSteps {
 
   @Пусть("Открыта страница выбора курсов$")
   public void openCoursePage() {
-    coursesPage.open();
+    coursesPage.open().checkCoursesPageVisibility();
   }
 
   @Пусть("курсы развернуты (\\d{1,3}) раз(?:а?)$")
@@ -29,18 +29,14 @@ public class CoursesPageSteps extends LoggedSteps {
 
   @Пусть("Найдены курсы стартующие в дату (.*)$")
   public void findCoursesStartingOnDate(String date) {
-    LOG.info(date);
+    LOG.info("Ищем курсы стартующие в дату {}", date);
     coursesPage.findAndPrintCourseByExactDate(date);
   }
 
   @Пусть("Найдены курсы стартующие позже даты (.*)$")
   public void findCoursesStartingAfterDate(String date) {
-    LOG.info(date);
-  }
-
-  @Пусть("Выбрана категория (.*)$")
-  public void chooseCategory(String category) {
-    LOG.info(category);
+    LOG.info("Ищем курсы стартующие после даты {}", date);
+    coursesPage.findAndPrintCourseAfterDate(date);
   }
 
   @Пусть("Найден самый (дорогой|дешевый) курс$")
@@ -51,6 +47,7 @@ public class CoursesPageSteps extends LoggedSteps {
     else
       comparator = Comparator.reverseOrder();
     LOG.info(comparator.toString());
+    coursesPage.getPreCoursesPrices();
   }
 
 }

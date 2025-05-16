@@ -3,7 +3,7 @@ package org.example.utils;
 import java.util.List;
 import java.util.Objects;
 
-public final class CourseDates implements Comparable<CourseDates> {
+public final class CourseDate implements Comparable<CourseDate> {
   private static final List<String> MONTHS = List.of(
       "января", "февраля", "марта", "апреля", "мая", "июня",
       "июля", "августа", "сентября", "октября", "ноября", "декабря"
@@ -13,7 +13,7 @@ public final class CourseDates implements Comparable<CourseDates> {
   Integer month;
   Integer year;
 
-  public CourseDates(String string) {
+  public CourseDate(String string) {
     if (string == null || string.trim().isEmpty()) {
       throw new IllegalArgumentException("Date string cannot be null or empty");
     }
@@ -29,7 +29,7 @@ public final class CourseDates implements Comparable<CourseDates> {
   }
 
   @Override
-  public int compareTo(CourseDates o) {
+  public int compareTo(CourseDate o) {
     int yearCompare = this.year.compareTo(o.year);
     if (yearCompare != 0) {
       return yearCompare;
@@ -43,6 +43,20 @@ public final class CourseDates implements Comparable<CourseDates> {
     return this.day.compareTo(o.day);
   }
 
+  public static CourseDate max(CourseDate a, CourseDate b) {
+    if(a.compareTo(b) >= 0)
+      return a;
+    else
+      return b;
+  }
+
+  public static CourseDate min(CourseDate a, CourseDate b) {
+    if(a.compareTo(b) >= 0)
+      return b;
+    else
+      return a;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (this == obj) {
@@ -53,7 +67,7 @@ public final class CourseDates implements Comparable<CourseDates> {
       return false;
     }
 
-    CourseDates other = (CourseDates) obj;
+    CourseDate other = (CourseDate) obj;
 
     return Objects.equals(day, other.day)
         && Objects.equals(month, other.month)

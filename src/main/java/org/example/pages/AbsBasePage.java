@@ -11,7 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 abstract public class AbsBasePage<T> extends AbsCommon<T> {
-  private static final String BASE_URL = "https://otus.ru";
+  private static final String BASE_URL = System.getProperty("baseUrl", "https://otus.ru");
 
   @Inject
   public AbsBasePage(GuiceScoped guiceScoped) {

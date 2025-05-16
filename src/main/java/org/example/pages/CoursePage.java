@@ -9,14 +9,24 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.nio.file.WatchEvent;
+import java.util.Map;
+import java.util.zip.ZipEntry;
 
 public class CoursePage extends AbsBasePage<CoursePage> {
 
   private static final Logger LOG = LoggerFactory.getLogger(CoursePage.class);
-  @FindBy(xpath = "/html/body/div[1]/div[2]/main/div/section/div[2]/div[2]/h1")
+  @FindBy(xpath = "//main//div[contains(@class, 'sc-s2pydo-6')]//h1[contains(@class, 'sc-1x9oq14-0')]")
   WebElement displayTitleElement;
+
+  @FindBy(xpath = "//main//div[contains(@class,'sc-153sikp-4')]//div[contains(@class,'sc-153sikp-11')]")
+  WebElement priceElement;
+
+  @FindBy(xpath = "//main//div[contains(@class,'sc-153sikp-3')]//h3")
+  WebElement title;
 
   @Inject
   CoursesPage coursesPage;
@@ -51,5 +61,10 @@ public class CoursePage extends AbsBasePage<CoursePage> {
   public CoursesPage getBackToCourses() {
     driver.navigate().back();
     return coursesPage;
+  }
+
+  public Map.Entry<String, String> getPrice() {
+    waiter.waitForCondition(ExpectedConditions.visibilityOf(priceElement));
+    return Map.entry(title.getText(), priceElement.getText());
   }
 }
