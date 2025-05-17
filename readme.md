@@ -5,10 +5,10 @@
  - java17
 
 ### Запуск
-```gradle clean build```
+```gradle clean build -PbaseUrl=https://otus.ru```
 
 ### Кейсы:
- - Сценарий 1 - CourseSelectionTest
- - Сценарий 2 - EarliestAndLatestCourseDatesDateTest
- - Сценарий 3 - CategorySelectionTest
- - (для собственного погружения) - FirstTest
+ - Фича 1 (выбор браузера) - test_feature.feature
+ - Фича 2 (поиск указанного курса) - choose_course_feature.feature
+ - Фича 3 (поиск курсов, стартующих в указанную дату или позже указанной даты) - choose_course_by_date_feature.feature
+ - Фича 4 (выбрать самый дорогой и самый дешевый курс) - choose_precourse_by_price_feature.feature

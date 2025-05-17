@@ -17,8 +17,8 @@ public class Hooks {
   private GuiceScoped guiceScoped;
 
   @Before()
-  public void afterScenario() {
-    LOG.info("start scenario");
+  public void beforeScenario(Scenario scenario) {
+    LOG.info("start scenario {}", scenario.getName());
   }
 
   @After
