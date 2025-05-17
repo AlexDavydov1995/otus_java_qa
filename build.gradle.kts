@@ -61,8 +61,14 @@ tasks.test {
     )
     ignoreFailures = false
     testLogging {
-        events("passed", "skipped", "failed")
+        events("failed")
         showStandardStreams = true
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
+}
+
+tasks.withType<Test> {
+    project.findProperty("baseUrl")?.let { baseUrlValue ->
+        systemProperty("baseUrl", baseUrlValue)
     }
 }

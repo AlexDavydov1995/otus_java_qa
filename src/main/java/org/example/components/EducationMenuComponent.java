@@ -29,7 +29,9 @@ public class EducationMenuComponent extends AbsComponent<EducationMenuComponent>
     List<WebElement> categoryWebElements = allCoursesElement.findElements(By.xpath("//p[text()='Все курсы']/following-sibling::div/a"));
     return categoryWebElements.stream()
         .filter(it ->
-            !Objects.equals(it.getAccessibleName(), "Специализации (13)")
+            !Objects.requireNonNull(it.getAccessibleName()).contains("Специализации")
+                ||
+                !Objects.requireNonNull(it.getAccessibleName()).contains("Подготовительные курсы")
         )
         .skip(RANDOM.nextInt(categoryWebElements.size()))
         .findFirst().orElseThrow();
