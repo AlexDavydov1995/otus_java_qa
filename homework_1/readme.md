@@ -6,7 +6,8 @@
 
 ### Запуск
 ```gradle clean build -PbaseUrl=https://otus.ru```
-
+или (если из командной строки градл)
+```gradle homework_1:clean homework_1:build -PbaseUrl=https://otus.ru```
 ### Кейсы:
  - Сценарий 1 - CourseSelectionTest
  - Сценарий 2 - EarliestAndLatestCourseDatesDateTest

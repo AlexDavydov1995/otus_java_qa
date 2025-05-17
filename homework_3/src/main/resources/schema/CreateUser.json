@@ -5,7 +5,7 @@
     "code": {
       "type": "integer",
       "minimum": 200,
-      "maximum": 500
+      "maximum": 505
     },
     "type": {
       "type": "string"

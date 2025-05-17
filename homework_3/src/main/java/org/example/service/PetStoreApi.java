@@ -2,25 +2,22 @@ package org.example.service;
 
 import static io.restassured.RestAssured.given;
 
-import io.restassured.http.ContentType;
+import com.google.inject.Inject;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
-import org.example.dto.NewUserDTO;
+import org.example.dto.UserDTO;
 
 public class PetStoreApi {
 
-  private static final String BASE_URL = System.getProperty("baseUrl", "https://petstore.swagger.io/v2");
-  private RequestSpecification spec;
+  private final RequestSpecification requestSpecification;
 
-  public PetStoreApi() {
-    spec = given()
-        .baseUri(BASE_URL)
-        .contentType(ContentType.JSON);
+  @Inject
+  public PetStoreApi(RequestSpecification requestSpecification) {
+    this.requestSpecification = requestSpecification;
   }
 
-  public ValidatableResponse creteNewUser(NewUserDTO userDTO) {
-
-    return given(spec)
+  public ValidatableResponse creteNewUser(UserDTO userDTO) {
+    return given(requestSpecification)
         .basePath("/user")
         .body(userDTO)
         .log().all()
@@ -30,14 +27,22 @@ public class PetStoreApi {
         .log().all();
   }
 
-  public ValidatableResponse deleteUser(String userName) {
-
-    return given(spec)
-        .basePath("/user/{username}")
-        .pathParam("username", userName)
+  public ValidatableResponse getUser(String username) {
+    return given(requestSpecification)
+        .pathParam("username", username)
         .log().all()
         .when()
-        .delete()
+        .get("user/{username}")
+        .then()
+        .log().all();
+  }
+
+  public ValidatableResponse deleteUser(String username) {
+    return given(requestSpecification)
+        .pathParam("username", username)
+        .log().all()
+        .when()
+        .delete("user/{username}")
         .then()
         .log().all();
   }
