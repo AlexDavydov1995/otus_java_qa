@@ -1,6 +1,6 @@
-# Otus-JQA_Pro_hw1
+# Otus-JQA_Pro_hw2
 
-## Домашнее задание по практике 1
+## Домашнее задание по практике 2
 ### Requirements
  - java17
 
