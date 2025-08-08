@@ -1,14 +1,9 @@
-# Otus-JQA_Pro_hw1
+# Otus-JQA_Pro_hw5
 
-## Домашнее задание по практике 1
+## Домашнее задание по практике 5
 ### Requirements
  - java17
 
 ### Запуск
-```gradle clean build -PbaseUrl=https://otus.ru```
+```clean build --refresh-dependencies -Pstub.url=http://localhost:8080 -Pcb.url=https://cbr.ru/scripts -Pps.url=https://petstore.swagger.io/v2```
 
-### Кейсы:
- - Сценарий 1 - CourseSelectionTest
- - Сценарий 2 - EarliestAndLatestCourseDatesDateTest
- - Сценарий 3 - CategorySelectionTest
- - (для собственного погружения) - FirstTest
