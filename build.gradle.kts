@@ -3,6 +3,7 @@ plugins {
     idea
     id("com.github.spotbugs") version "6.1.7"
     checkstyle
+    id("io.freefair.lombok") version "8.1.0"
 }
 
 java {
@@ -33,6 +34,20 @@ dependencies {
     implementation("org.jsoup:jsoup:${project.property("jsoupVersion")}")
     implementation("org.apache.logging.log4j:log4j-core:2.23.1")
     implementation("org.apache.logging.log4j:log4j-api:2.23.1")
+
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
+
+    // WireMock
+    implementation("com.github.tomakehurst:wiremock:2.27.2")
+
+    // RestAssured
+    implementation("io.rest-assured:rest-assured:4.4.0")
+    implementation("io.rest-assured:json-schema-validator:4.4.0")
+
+    // Для SOAP-хелпера
+    implementation("javax.xml.soap:javax.xml.soap-api:1.4.0")
+    implementation("com.sun.xml.messaging.saaj:saaj-impl:1.5.2")
 }
 
 sourceSets {
@@ -61,14 +76,20 @@ tasks.test {
     )
     ignoreFailures = false
     testLogging {
-        events("failed")
+        events("passed", "failed", "skipped")
         showStandardStreams = true
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }
 }
 
 tasks.withType<Test> {
-    project.findProperty("baseUrl")?.let { baseUrlValue ->
-        systemProperty("baseUrl", baseUrlValue)
+    project.findProperty("stub.url")?.let { baseUrlValue ->
+        systemProperty("stub.url", baseUrlValue)
+    }
+    project.findProperty("cb.url")?.let { baseUrlValue ->
+        systemProperty("cb.url", baseUrlValue)
+    }
+    project.findProperty("ps.url")?.let { baseUrlValue ->
+        systemProperty("ps.url", baseUrlValue)
     }
 }
