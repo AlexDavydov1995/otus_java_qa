@@ -57,11 +57,6 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
       );
       waiter.waitForCondition(ExpectedConditions.elementToBeClickable(expandButton));
       expandButton.click();
-      try {
-        Thread.sleep(1500);
-      } catch (InterruptedException e) {
-        throw new DelayException();
-      }
 
     }
     return this;
@@ -104,6 +99,7 @@ public class CoursesPage extends AbsBasePage<CoursesPage> {
   public String findAndClickEarliest() {
     String earliestDate = findCourseDates().reduce(CourseDates::min).orElseThrow().toString();
     log.info("Наиболее ранняя дата из найденных {}", earliestDate);
+    log.info(By.xpath("//div[contains(text(), '"+earliestDate+"')]").toString());
     WebElement earliestCourse = courses.findElements(By.xpath("//div[contains(text(), '"+earliestDate+"')]")).get(0);
     centerElement(earliestCourse);
     waiter.waitForCondition(ExpectedConditions.elementToBeClickable(earliestCourse));

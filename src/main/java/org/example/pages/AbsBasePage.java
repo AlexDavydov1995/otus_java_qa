@@ -3,7 +3,6 @@ package org.example.pages;
 import com.google.inject.Inject;
 import org.example.annotations.Path;
 import org.example.common.AbsCommon;
-import org.example.exceptions.DelayException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -11,7 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 abstract public class AbsBasePage<T> extends AbsCommon<T> {
-  private static final String BASE_URL = System.getProperty("baseUrl","https://otus.ru");
+  private static final String BASE_URL = System.getProperty("baseUrl", "https://otus.ru");
 
   @Inject
   public AbsBasePage(WebDriver driver) {
@@ -33,15 +32,10 @@ abstract public class AbsBasePage<T> extends AbsCommon<T> {
   }
 
   public void centerElement(WebElement element) {
-    try {
-      ((JavascriptExecutor) driver).executeScript(
-          "arguments[0].scrollIntoView({block: 'center'});",
-          element
-      );
-      Thread.sleep(1000);
-    } catch (InterruptedException exception) {
-      throw new DelayException();
-    }
+    ((JavascriptExecutor) driver).executeScript(
+        "arguments[0].scrollIntoView({block: 'center'});",
+        element
+    );
   }
 
   protected void closeCookiesMessage() {

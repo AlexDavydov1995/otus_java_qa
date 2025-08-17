@@ -30,7 +30,6 @@ public class CategorySelectionTest {
     String category = randomCategoryToClick.getAccessibleName().replaceAll("\\s\\(\\d{1,3}\\)", "");
     LOG.debug("выбранная категория - " + category);
     randomCategoryToClick.click();
-    Thread.sleep(2000);
     coursesPage.checkCoursesPageVisibility().checkCheckBoxInput(category);
   }
 

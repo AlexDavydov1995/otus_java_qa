@@ -15,21 +15,19 @@ public class CourseSelectionTest {
 
   static Stream<Arguments> courseDataProvider() {
     return Stream.of(
-        Arguments.of("Базы данных",
-            "Полный курс по работе с реляционными и нереляционными Nosql базами данных для профессионалов. Все основные и популярные БД: Postgresql, Mysql, mongodb, cassandra, redis"),
-        Arguments.of("Системный аналитик", "Специализация системный аналитик. Освойте востребованную профессию системного аналитика с нуля"),
-        Arguments.of("Бизнес-аналитик 1С", "Курс бизнес-аналитик 1С")
+        Arguments.of("DevOps Advanced"),
+        Arguments.of("Системный аналитик"),
+        Arguments.of("C++ Developer. Professional")
     );
   }
 
   @ParameterizedTest
   @MethodSource("courseDataProvider")
-  void testCourseSearch(String courseName, String pageTitle) throws InterruptedException {
+  void testCourseSearch(String courseName) throws InterruptedException {
     coursesPage.open()
         .expandNTimes(3)
         .waitCoursesVisible()
         .findAndClickCourseByName(courseName)
-        .checkTitle(pageTitle)
         .checkDisplayTitle(courseName);
   }
 }

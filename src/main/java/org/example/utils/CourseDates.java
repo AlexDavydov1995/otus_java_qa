@@ -9,7 +9,7 @@ public final class CourseDates implements Comparable<CourseDates> {
       "июля", "августа", "сентября", "октября", "ноября", "декабря"
   );
 
-  Integer day;
+  String day;
   Integer month;
   Integer year;
 
@@ -23,7 +23,7 @@ public final class CourseDates implements Comparable<CourseDates> {
       throw new IllegalArgumentException("Invalid date format. Expected: 'dd MMMM yyyy', actual: " + string);
     }
 
-    day = Integer.valueOf(splittedString[0]);
+    day = splittedString[0];
     month = MONTHS.indexOf(splittedString[1].replace(",", "")) + 1;
     year = Integer.valueOf(splittedString[2]);
   }
@@ -40,7 +40,10 @@ public final class CourseDates implements Comparable<CourseDates> {
       return monthCompare;
     }
 
-    return this.day.compareTo(o.day);
+    Integer thisDay = Integer.valueOf(this.day);
+    Integer otherDay = Integer.valueOf(o.day);
+
+    return thisDay.compareTo(otherDay);
   }
 
   @Override

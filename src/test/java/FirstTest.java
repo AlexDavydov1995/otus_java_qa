@@ -15,12 +15,10 @@ public class FirstTest {
   MainPageBreadcrumbsComponent mainPageBreadcrumbsComponent;
 
   @Test
-  public void test() throws InterruptedException {
+  public void test()  {
     mainPage.open()
         .checkBreadcrumbsVisibility();
 
     mainPageBreadcrumbsComponent.clickProgrammingBreadcrumb();
-    Thread.sleep(2000);
   }
-
 }
